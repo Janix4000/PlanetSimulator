@@ -115,6 +115,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Camera\Camera.h" />
+    <ClInclude Include="Source\Camera\FollowingBehavior.h" />
+    <ClInclude Include="Source\Objects\Component.h" />
+    <ClInclude Include="Source\Objects\Entity.h" />
+    <ClInclude Include="Source\Objects\FreePhysics.h" />
+    <ClInclude Include="Source\Objects\Planet.h" />
+    <ClInclude Include="Source\Utilities\ChilliMath.h" />
+    <ClInclude Include="Source\Utilities\Random.h" />
+    <ClInclude Include="Source\Utilities\Vec2.h" />
+    <ClInclude Include="Source\Utilities\Vec3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Objects\Planet.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
