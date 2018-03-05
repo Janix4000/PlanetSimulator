@@ -103,6 +103,27 @@ public:
 		}
 		return *this;
 	}
+	T getDotProduct(_Vec2<T> other)
+	{
+		return x * other.x + y * other.y;
+	}
+	T getDeterminant(_Vec2<T> righth)
+	{
+		return x * right.y - y * right.x;
+	}
+
+	T getAngleBetween(_Vec2<T> other)
+	{
+		T dot = getDotProduct(other);
+		T det = getDeterminant(other);
+		
+		return atan2(dot, det);
+	}
+	T getAngleBetweenInDegrees(_Vec2<T> other)
+	{
+		return getInDeegrees(getAngleBetween(other));
+	}
+
 
 
 	_Vec2	operator-() const

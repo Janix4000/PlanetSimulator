@@ -20,12 +20,16 @@
 ******************************************************************************************/
 #pragma once
 
-#include <math.h>
+#ifndef PI
+#define PI 3.14159265f
+#endif
 
-constexpr float PI = 3.14159265f;
-constexpr float TWO_PI = 2.0f * PI;
-constexpr double PI_D = 3.1415926535897932;
-constexpr double TWO_PI_D = 2.0 * PI_D;
+#define TWO_PI 2.0f * PI
+#define PI_D 3.1415926535897932
+#define TWO_PI_D 2.0 * PI_D
+
+
+#include <math.h>
 
 
 template <typename T>
@@ -53,4 +57,10 @@ template<typename T>
 inline T map(const T& base, const T& oldMin, const T& oldMax, const T& newMin, const T& newMax)
 {
 	return ((base - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin;
+}
+
+template<typename T>
+inline T getInDeegrees(T inRadians)
+{
+	return T(360) * inRadians / T(TWO_PI_D);
 }
