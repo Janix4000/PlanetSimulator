@@ -42,7 +42,7 @@ private:
 
 		std::cout << oldCamPos.x << " " << oldCamPos.y << "\n";
 
-		mainCamera.setPosition(oldCamPos + shift * dt);
+		//mainCamera.move(shift * dt);
 	}
 
 

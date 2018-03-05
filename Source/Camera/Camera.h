@@ -7,6 +7,8 @@ class Camera
 public:
 
 	Camera()
+		:
+		behavior(physic)
 	{
 		cam.setSize(1280.f, 720.f);
 		physic.pos = { 0.f, 0.f };
@@ -17,9 +19,9 @@ public:
 		updatePhysic(dt);
 	}
 
-	void setPosition(const sf::Vector2f& position)
+	void setTarget(const Planet& target)
 	{
-		behavior.setTarget(position);
+		behavior.setTarget(target);
 	}
 
 	sf::Vector2f getPosition() const
@@ -27,9 +29,21 @@ public:
 		return cam.getCenter();
 	}
 
+	void setPosition(const sf::Vector2f newPosition)
+	{
+		free();
+		physic.pos = { newPosition.x, newPosition.y };
+		applyPhysikToView();
+	}
+
+	void move(sf::Vector2f shift)
+	{
+		setPosition(getPosition() + shift);
+	}
+
 	void free()
 	{
-		behavior.stop(physic);
+		behavior.changeStateToFree();
 	}
 
 	void applyToWindow(sf::RenderTarget& window) const
@@ -52,10 +66,9 @@ private:
 
 	void updatePhysic(float dt)
 	{
-		behavior.applyTo(dt, physic);
+		behavior.update(dt);
 		physic.update(dt);
 		applyPhysikToView();
-
 	}
 
 	void applyPhysikToView()

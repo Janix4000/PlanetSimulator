@@ -3,7 +3,8 @@
 Game::Game()
 	:
 	window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Planets"),
-	planets(rng)
+	planets(mainCamera),
+	camSpeed(150.f)
 {
 	window.setFramerateLimit(60);
 	mainCamera.setPosition({ WIN_WIDTH / 2.f, WIN_HEIGHT / 2.f });
@@ -33,8 +34,8 @@ void Game::run()
 
 void Game::update(float dt)
 {
-	//handleCameraControl(dt);
-	//mainCamera.applyToWindow(window);
+	handleCameraControl(dt);
+	mainCamera.applyToWindow(window);
 
 	mainCamera.update(dt);
 

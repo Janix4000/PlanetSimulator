@@ -5,13 +5,14 @@
 #include <algorithm>
 
 #include "Planet.h"
+#include "../Camera/Camera.h"
 
 class PlanetManager
 {
 public:
-	PlanetManager(Random<>& rng)
+	PlanetManager(Camera& mainCamera)
 		:
-		rng(rng)
+		mainCamera(&mainCamera)
 	{
 
 	}
@@ -37,6 +38,9 @@ public:
 		{
 		case sf::Event::MouseButtonPressed:
 			auto& newPlanet = *addPlanet();
+
+			mainCamera->setTarget(newPlanet);
+
 			auto mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 			newPlanet.setPosition({mousePos.x, mousePos.y});
 			break;
@@ -46,16 +50,7 @@ public:
 	Planet* addPlanet()
 	{
 		auto planet = std::make_unique<Planet>();
-		float y = rng.getFloatInRange(0.f, 700.f);
-		float x = rng.getFloatInRange(0.f, 1200.f);
 
-		planet->setPosition({ x,y });
-
-		float velX = rng.getFloatInRange(-10.f, 10.f);
-		float velY = rng.getFloatInRange(-10.f, 10.f);
-
-		planet->setVelocity({ velX,velY });
-		
 		auto planetPtr = planet.get();
 
 		planets.emplace_back(std::move(planet));
@@ -110,5 +105,5 @@ public:
 private:
 	std::vector<std::unique_ptr<Planet>> planets;
 
-	Random<>& rng;
+	Camera* mainCamera;
 };
