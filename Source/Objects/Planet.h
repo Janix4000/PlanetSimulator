@@ -47,57 +47,19 @@ private:
 
 private:
 
-	float getNewRadiusByMass(float newMass) const
-	{
-		return sqrt(newMass / PI);
-	}
+	float getNewRadiusByMass(float newMass) const;
 
-	float getNewMassByRadius(float newRadius) const
-	{
-		return pow(newRadius, 2) * PI;
-	}
+	float getNewMassByRadius(float newRadius) const;
 
-	sf::Color getRandomColor(int spacing = 16) const
-	{
-		Random<> rng;
+	sf::Color getRandomColor(int spacing = 16) const;
 
-		char newR = getRandomColorParameter(rng, spacing);
-		char newG = getRandomColorParameter(rng, spacing);
-		char newB = getRandomColorParameter(rng, spacing);
-
-		return sf::Color( newR, newG, newB );
-	}
-
-	char getRandomColorParameter(Random<>& rng, int spacing = 1) const
-	{
-		int newColorParameter = rng.getIntInRange(0, 255 / spacing) * spacing;
-		return char(newColorParameter);
-	}
+	char getRandomColorParameter(Random<>& rng, int spacing = 1) const;
 
 
-	Vec2 getForceVecBetween(const Planet& other)
-	{
-		const auto distVec = getDistVecBetween(other);
-		const float distSqr = distVec.getLenSq();
+	Vec2 getForceVecBetween(const Planet& other);
 
-		if (distSqr < 10.f) return { 0.f, 0.f };
+	Vec2 getDistVecBetween(const Planet& other);
 
-		float strength = G * mass * other.mass / distSqr;
-
-		auto forceVec = distVec;
-		forceVec.setLen(strength);
-
-		return forceVec;
-	}
-
-	Vec2 getDistVecBetween(const Planet& other)
-	{
-		return other.physic.pos - physic.pos;
-	}
-
-	void applyForce(const Vec2& force)
-	{
-		physic.acc += force;
-	}
+	void applyForce(const Vec2& force);
 
 };
