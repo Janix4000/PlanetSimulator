@@ -4,6 +4,8 @@
 
 #include "Camera\Camera.h"
 
+#include "Objects\Planet.h"
+
 #define WIN_WIDTH 1280
 #define WIN_HEIGHT 720
 
@@ -31,5 +33,9 @@ private:
 		sf::Vector2f shift;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) shift.x += camSpeed * dt;
 	}
+
+
+	Planet planet1;
+	Planet planet2;
 
 };
