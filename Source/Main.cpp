@@ -1,5 +1,8 @@
+#include "Game.h"
+
 int main()
 {
-	//mial byc a poczatku saper, ale zmienilem zdanie ;P
+	Game game;
+	game.run();
 	return 0;
 }

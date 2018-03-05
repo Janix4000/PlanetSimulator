@@ -48,7 +48,7 @@ private:
 	sf::View cam;
 
 	FollowingBehavior behavior;
-	FreePhysic physic;
+	FreePhysics physic;
 
 	void updatePhysic(float dt)
 	{
