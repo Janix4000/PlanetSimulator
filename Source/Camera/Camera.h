@@ -9,7 +9,7 @@ public:
 	Camera()
 	{
 		cam.setSize(1280.f, 720.f);
-		physic.pos = { 1200.f, 1200.f };
+		physic.pos = { 0.f, 0.f };
 	}
 
 	void update(float dt)

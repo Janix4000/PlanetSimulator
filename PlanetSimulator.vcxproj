@@ -122,6 +122,7 @@
     <ClInclude Include="Source\Objects\Entity.h" />
     <ClInclude Include="Source\Objects\FreePhysics.h" />
     <ClInclude Include="Source\Objects\Planet.h" />
+    <ClInclude Include="Source\Objects\PlanetManager.h" />
     <ClInclude Include="Source\Utilities\ChilliMath.h" />
     <ClInclude Include="Source\Utilities\Random.h" />
     <ClInclude Include="Source\Utilities\Vec2.h" />

@@ -41,10 +41,12 @@ void Planet::render(sf::RenderTarget & renderer) const
 
 void Planet::attractBoth(Planet & other)
 {
-	auto forceVec = getForceVecBetween(other);
+	auto forceVec1 = getForceVecBetween(other);
 
-	applyForce(forceVec);
-	other.applyForce(-forceVec);
+	applyForce(forceVec1);
+
+	auto forceVec2 = other.getForceVecBetween(*this);
+	other.applyForce(forceVec2);
 }
 
  Vec2 Planet::getForceVecBetween(const Planet & other)
@@ -62,7 +64,7 @@ void Planet::attractBoth(Planet & other)
 	return forceVec;
 }
 
- Vec2 Planet::getDistVecBetween(const Planet & other)
+ Vec2 Planet::getDistVecBetween(const Planet & other) const
 {
 	return other.physic.pos - physic.pos;
 }
