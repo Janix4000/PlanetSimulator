@@ -7,6 +7,8 @@
 #include "../Editor/PlanetEditor.h"
 #include "../Camera/Camera.h"
 
+#include "../Editor/Orbit.h"
+
 class PlanetManager
 {
 private:
@@ -26,9 +28,11 @@ public:
 		pause.setFillColor(sf::Color::Yellow);
 		edit.setFillColor(sf::Color::Red);
 
-		run.setSize({ 128.f, 128.f });
-		pause.setSize({ 128.f, 128.f });
-		edit.setSize({ 128.f, 128.f });
+		const Vec2 dimension = { 32.f, 32.f };
+
+		run.setSize(dimension);
+		pause.setSize(dimension);
+		edit.setSize(dimension);
 
 		run.setPosition(0.f, 0.f);
 		pause.setPosition(0.f, 0.f);
@@ -52,6 +56,18 @@ public:
 		default:
 			break;
 		}
+
+		if (orbiting)
+		{
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+			{
+				testOrbit.addToEFactor(dt);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+			{
+				testOrbit.addToEFactor(-dt);
+			}
+		}
 		
 	}
 
@@ -69,6 +85,11 @@ public:
 		for (const auto& planet : planets)
 		{
 			planet->render(renderer);
+		}
+
+		if (orbiting)
+		{
+			testOrbit.render(renderer);
 		}
 
 		auto oldView = renderer.getView();
@@ -100,8 +121,22 @@ public:
 
 		renderer.setView(oldView);
 	}
+
 	void handleEvent(sf::Event e, const sf::RenderWindow& window)
 	{
+		if (orbiting)
+		{
+			if (e.type == sf::Event::KeyPressed)
+			{
+				if(sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+				{
+					orbiting = false;
+					testOrbit.free();
+					state = State::Pause;
+				}
+			}
+			return;
+		}
 		switch (state)
 		{
 		case State::Running:
@@ -120,6 +155,43 @@ public:
 			break;
 		}
 	}
+
+	void handleInput(const sf::RenderWindow& window)
+	{
+		if (orbiting)
+		{
+			handleOrbitingInput(window);
+			return;
+		}
+		switch (state)
+		{
+		case State::Running:
+			break;
+
+		case State::Editing:
+			editor.handleInput(window);
+			break;
+
+		case State::Pause:
+			break;
+
+		default:
+			break;
+
+		}
+	}
+
+private:
+	std::vector<std::unique_ptr<Planet>> planets;
+
+	Camera* mainCamera;
+	PlanetEditor editor;
+
+	State state{ State::Pause };
+
+	Planet* selectedPlanet{ nullptr };
+
+	sf::RectangleShape run, pause, edit;
 
 	void handleRunningEvent(sf::Event e, const sf::RenderWindow& window)
 	{
@@ -159,25 +231,7 @@ public:
 		}
 	}
 
-	void handleInput(const sf::RenderWindow& window)
-	{
-		switch (state)
-		{
-		case State::Running:
-			break;
-
-		case State::Editing:
-			editor.handleInput(window);
-			break;
-
-		case State::Pause:
-			break;
-
-		default:
-			break;
-
-		}
-	}
+	
 
 	Planet* addPlanet()
 	{
@@ -185,7 +239,14 @@ public:
 		auto planetPtr = planet.get();
 
 		//selectPlanet(*planet);
-		startEditing(*planet);
+
+		if(planets.size() < 1u) startEditing(*planet);
+		else
+		{
+			orbiting = true;
+			testOrbit.setSun(*planets.back());
+			testOrbit.setOrbiter(*planet);
+		}
 
 		planets.emplace_back(std::move(planet));
 		return planetPtr;
@@ -207,7 +268,7 @@ public:
 		for (int i = 0; i < planets.size(); i++)
 		{
 			auto& planet = planets[i];
-			for (int j = i+1; j < planets.size(); j++)
+			for (int j = i + 1; j < planets.size(); j++)
 			{
 				auto& nextPlanet = planets[j];
 				planet->attractBoth(*nextPlanet);
@@ -239,20 +300,6 @@ public:
 			return !planet->isAlive();
 		}), planets.end());
 	}
-
-private:
-	std::vector<std::unique_ptr<Planet>> planets;
-
-	Camera* mainCamera;
-	PlanetEditor editor;
-
-	State state{ State::Pause };
-
-	Planet* selectedPlanet{ nullptr };
-
-	sf::RectangleShape run, pause, edit;
-
-
 
 	void startEditing(Planet& planet)
 	{
@@ -323,6 +370,19 @@ private:
 				newPlanet.setPosition(mousePos);
 			}
 			break;
+		}
+	}
+
+
+	Orbit testOrbit;
+	bool orbiting{ false };
+
+	void handleOrbitingInput(const sf::RenderWindow& window)
+	{
+		if (orbiting)
+		{
+			const auto mousePos = getRealMousePos(window);
+			testOrbit.setOrbiterPos(mousePos);
 		}
 	}
 
