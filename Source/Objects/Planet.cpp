@@ -37,6 +37,7 @@ void Planet::update(float dt)
 void Planet::render(sf::RenderTarget & renderer) const
 {
 	renderer.draw(circle);
+	renderVecs(renderer);
 }
 
 void Planet::attractBoth(Planet & other)
@@ -56,7 +57,7 @@ void Planet::attractBoth(Planet & other)
 
 	if (distSqr < 10.f) return { 0.f, 0.f };
 
-	float strength = G * mass * other.mass / distSqr;
+	float strength = G * other.mass / distSqr;
 
 	auto forceVec = distVec;
 	forceVec.setLen(strength);

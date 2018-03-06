@@ -21,7 +21,7 @@
 #pragma once
 
 #include "ChilliMath.h"
-#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics.hpp>
 
 template <typename T>
 class _Vec2
@@ -196,3 +196,10 @@ public:
 typedef _Vec2<float> Vec2;
 typedef _Vec2<double> Ved2;
 typedef _Vec2<int> Vei2;
+
+inline Vec2 getRealMousePos(const sf::RenderWindow& window)
+{
+	auto mPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+	return { mPos.x, mPos.y };
+}

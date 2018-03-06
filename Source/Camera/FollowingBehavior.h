@@ -91,6 +91,7 @@ private:
 
 	void followTarget()
 	{
+		/*
 		const auto pos = ownersPhysic->pos;
 
 		auto distVec = target->getPosition() - pos;
@@ -104,6 +105,9 @@ private:
 		ownersPhysic->vel.limit(maxSpeed);
 
 		handleCatching();
+		*/
+
+		ownersPhysic->pos = target->getPosition();
 	}
 
 	Vec2 makeDesire(Vec2& distVec)

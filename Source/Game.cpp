@@ -27,6 +27,7 @@ void Game::run()
 
 		update(dt);
 		render();
+		handleInput();
 
 		dt = clock.restart().asSeconds();
 	}
@@ -54,4 +55,9 @@ void Game::render()
 void Game::handleEvent(sf::Event e)
 {
 	planets.handleEvent(e, window);
+}
+
+void Game::handleInput()
+{
+	planets.handleInput(window);
 }

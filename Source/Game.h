@@ -29,10 +29,11 @@ private:
 	void update(float dt);
 	void render();
 	void handleEvent(sf::Event e);
+	void handleInput();
 
 	void handleCameraControl(float dt)
 	{
-		sf::Vector2f shift;
+		Vec2 shift = { 0.f, 0.f };
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) shift.y -= camSpeed;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) shift.y += camSpeed;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) shift.x -= camSpeed;
@@ -40,9 +41,9 @@ private:
 
 		auto oldCamPos = mainCamera.getPosition();
 
-		std::cout << oldCamPos.x << " " << oldCamPos.y << "\n";
+		//std::cout << oldCamPos.x << " " << oldCamPos.y << "\n";
 
-		//mainCamera.move(shift * dt);
+		if(shift.getLenSq() > 0.f) mainCamera.move(shift * dt);
 	}
 
 

@@ -117,6 +117,11 @@
   <ItemGroup>
     <ClInclude Include="Source\Camera\Camera.h" />
     <ClInclude Include="Source\Camera\FollowingBehavior.h" />
+    <ClInclude Include="Source\Editor\BaseEditor.h" />
+    <ClInclude Include="Source\Editor\PlanetEditor.h" />
+    <ClInclude Include="Source\Editor\PositionEditor.h" />
+    <ClInclude Include="Source\Editor\RadiusEditor.h" />
+    <ClInclude Include="Source\Editor\VelocityEditor.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Objects\Component.h" />
     <ClInclude Include="Source\Objects\Entity.h" />

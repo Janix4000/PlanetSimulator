@@ -6,7 +6,7 @@
 #include "../Utilities/Vec2.h"
 #include "../Utilities/Random.h"
 
-#define G 1.f
+#define G 100.f
 
 class Planet
 {
@@ -32,6 +32,7 @@ public:
 	auto getPosition()const { return physic.pos; }
 	void setVelocity(const Vec2& newVelocity);
 	auto getVelocity() const { return physic.vel; }
+	auto getAcc() const { return physic.oldAcc; }
 
 	void kill() { alive = false; }
 	bool isAlive() const { return alive; }
@@ -50,6 +51,7 @@ public:
 			setVelocity(newVel);
 			setPosition(newPos);
 
+			meal.setMass(0.f);	
 			meal.kill();
 		}
 	}
@@ -62,6 +64,14 @@ public:
 		float tolSqr = pow(tolerance, 2);
 
 		return distSqr <= tolSqr * radiusSumSqr;
+	}
+
+	bool isOverlappingPoint(const Vec2& point) const
+	{
+		const auto distVec = getPosition() - point;
+		const float distSqr = distVec.getLenSq();
+
+		return distSqr <= pow(getRadius(), 2);
 	}
 
 private:
@@ -106,6 +116,26 @@ private:
 		int newB = (fRatio * fB + sRatio * sB) / 256;
 
 		return sf::Color(newR, newG, newB);
+	}
+
+	void renderVecs(sf::RenderTarget& renderer) const
+	{
+		auto velLine = getLineInReferenceToPos(getVelocity(), sf::Color::Blue);
+		auto accLine = getLineInReferenceToPos(getAcc(), sf::Color::Red);
+
+		renderer.draw(velLine);
+		renderer.draw(accLine);
+	}
+
+	sf::VertexArray getLineInReferenceToPos(Vec2 line, sf::Color c) const
+	{
+		sf::VertexArray lines(sf::LinesStrip, 2);
+		lines[0].position = getPosition();
+		lines[1].position = getPosition() + line;
+		lines[0].color = c;
+		lines[1].color = c;
+
+		return lines;
 	}
 
 };
