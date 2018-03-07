@@ -120,18 +120,20 @@ void PlanetManager::handleEvent(sf::Event e, const sf::RenderWindow & window)
 
 void PlanetManager::handleRunningEvent(sf::Event e, const sf::RenderWindow & window)
 {
+	holder.handleEvent(e, window);
+
+	if (holder.isAnySelected())
+	{
+		mainCamera->setTarget(*holder.getSelectedPlanetPtr());
+	}
+
 	if (e.type == sf::Event::KeyPressed)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
 			state = State::Pause;
+			unselect();
 		}
-	}
-	holder.handleEvent(e, window);
-
-	if (holder.getSelectedPlanetPtr() != nullptr)
-	{
-		mainCamera->setTarget(*holder.getSelectedPlanetPtr());
 	}
 }
 
@@ -157,7 +159,6 @@ void PlanetManager::handlePauseEvent(sf::Event e, const sf::RenderWindow & windo
 		}
 	}
 
-	unselect();
 	holder.handleEvent(e, window);
 	startEditingSelectedPlanet();
 }
@@ -191,14 +192,15 @@ void PlanetManager::startEditing(Planet & planet)
 {
 	state = State::Editing;
 	editor.edit(planet);
+	mainCamera->goTo(planet);
 }
 
 void PlanetManager::startEditingSelectedPlanet()
 {
-
 	if (holder.isAnySelected())
 	{
 		startEditing(*holder.getSelectedPlanetPtr());
+		holder.unSelect();
 		std::cout << "Editing started\n";
 	}
 }

@@ -26,10 +26,10 @@ void PlanetHolder::updateAllPlanets(float dt)
 
 void PlanetHolder::attractAllPlanets()
 {
-	for (int i = 0; i < planets.size(); i++)
+	for (size_t i = 0u; i < planets.size(); i++)
 	{
 		auto& planet = planets[i];
-		for (int j = i + 1; j < planets.size(); j++)
+		for (size_t j = i + 1; j < planets.size(); j++)
 		{
 			auto& nextPlanet = planets[j];
 			planet->attractBoth(*nextPlanet);
@@ -39,10 +39,10 @@ void PlanetHolder::attractAllPlanets()
 
 void PlanetHolder::handlePlanetCrushing()
 {
-	for (int i = 0; i < planets.size(); i++)
+	for (size_t i = 0u; i < planets.size(); i++)
 	{
 		auto& planet = planets[i];
-		for (int j = i + 1; j < planets.size(); j++)
+		for (size_t j = i + 1; j < planets.size(); j++)
 		{
 			auto& nextPlanet = planets[j];
 			if (nextPlanet->isOverlappingEnoughToMerge(*planet))

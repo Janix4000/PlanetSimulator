@@ -118,7 +118,6 @@
     <ClInclude Include="Source\Camera\Camera.h" />
     <ClInclude Include="Source\Camera\FollowingBehavior.h" />
     <ClInclude Include="Source\Editor\BaseEditor.h" />
-    <ClInclude Include="Source\Editor\DeleteEditor.h" />
     <ClInclude Include="Source\Editor\Orbit.h" />
     <ClInclude Include="Source\Editor\OrbitEditor.h" />
     <ClInclude Include="Source\Editor\PlanetEditor.h" />

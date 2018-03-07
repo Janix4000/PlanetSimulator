@@ -2,6 +2,7 @@
 
 #include "../Objects/FreePhysics.h"
 #include "../Objects/Planet.h"
+
 class FollowingBehavior
 {
 public:
@@ -10,6 +11,7 @@ public:
 	{
 		Free,
 		Going,
+		OnlyGoing,
 		Following
 	} state = State::Free;
 
@@ -28,6 +30,7 @@ public:
 			followTarget();
 			break;
 		case State::Going:
+		case State::OnlyGoing:
 			goToTarget(dt);
 			break;
 		}
@@ -49,6 +52,22 @@ public:
 		state = State::Going;
 	}
 
+	void goTo(const Planet& newTarget)
+	{
+		if (&newTarget != target)
+		{
+			target = &newTarget;
+
+			changeStateToGoingOnly();
+		}
+	}
+
+	void changeStateToGoingOnly()
+	{
+		resetHoldTime();
+		state = State::OnlyGoing;
+	}
+
 	void changeStateToFollowing()
 	{
 		state = State::Following;
@@ -57,6 +76,7 @@ public:
 	void changeStateToFree()
 	{
 		stopObj();
+		target = { nullptr };
 		state = State::Free;
 	}
 
@@ -79,7 +99,17 @@ private:
 		ownersPhysic->vel = newVel;
 		ownersPhysic->acc *= 0.f;
 
-		if (holdTime <= 0.f) changeStateToFollowing();
+		if (holdTime <= 0.f)
+		{
+			if (state == State::Going)
+			{
+				changeStateToFollowing();
+			}
+			else if (state == State::OnlyGoing)
+			{
+				changeStateToFree();
+			}
+		}
 	}
 
 	void resetHoldTime()

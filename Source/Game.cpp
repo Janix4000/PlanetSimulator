@@ -35,7 +35,7 @@ void Game::run()
 
 void Game::update(float dt)
 {
-	handleCameraControl(dt);
+	handleCameraInput(dt);
 	mainCamera.applyToWindow(window);
 
 	mainCamera.update(dt);
@@ -54,6 +54,7 @@ void Game::render()
 
 void Game::handleEvent(sf::Event e)
 {
+	handleCameraEvent(e, window);
 	planets.handleEvent(e, window);
 }
 

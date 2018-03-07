@@ -39,7 +39,7 @@ public:
 	{
 		e += addon;
 		if (e < 0.f) e = 0.f;
-		if (e > 0.6) e = 0.6;
+		if (e > 0.6f) e = 0.6f;
 	}
 
 private:

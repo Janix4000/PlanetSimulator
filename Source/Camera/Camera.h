@@ -2,6 +2,8 @@
 
 #include "FollowingBehavior.h"
 
+#include <iostream>
+
 class Camera
 {
 public:
@@ -24,6 +26,11 @@ public:
 		behavior.setTarget(target);
 	}
 
+	void goTo(const Planet& target)
+	{
+		behavior.goTo(target);
+	}
+
 	sf::Vector2f getPosition() const
 	{
 		return cam.getCenter();
@@ -39,6 +46,20 @@ public:
 	void move(sf::Vector2f shift)
 	{
 		setPosition(getPosition() + shift);
+	}
+
+	void zoom(float addon)
+	{
+		float factor = 1.f + addon;
+
+		float newTotalFactor = totalFactor * factor;
+
+		if (newTotalFactor > 5.f || newTotalFactor < 0.1f) return;
+		else
+		{
+			totalFactor = newTotalFactor;
+			cam.zoom(factor);
+		}
 	}
 
 	void free()
@@ -60,6 +81,8 @@ public:
 private:
 
 	sf::View cam;
+
+	float totalFactor{ 1.f };
 
 	FollowingBehavior behavior;
 	FreePhysics physic;

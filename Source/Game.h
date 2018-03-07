@@ -25,13 +25,14 @@ private:
 
 	Camera mainCamera;
 	float camSpeed;
+	float camZoomAddon{0.04f};
 
 	void update(float dt);
 	void render();
 	void handleEvent(sf::Event e);
 	void handleInput();
 
-	void handleCameraControl(float dt)
+	void handleCameraInput(float dt)
 	{
 		Vec2 shift = { 0.f, 0.f };
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) shift.y -= camSpeed;
@@ -41,9 +42,31 @@ private:
 
 		auto oldCamPos = mainCamera.getPosition();
 
-		//std::cout << oldCamPos.x << " " << oldCamPos.y << "\n";
-
 		if(shift.getLenSq() > 0.f) mainCamera.move(shift * dt);
+
+	}
+
+	void handleCameraEvent(sf::Event e, const sf::RenderWindow& window)
+	{
+		switch (e.type)
+		{
+		case sf::Event::MouseWheelScrolled:
+
+		{
+			float delta = e.mouseWheelScroll.delta;
+			if (delta < 0.f)
+			{
+				mainCamera.zoom(camZoomAddon);
+			}
+			else if (delta > 0.f)
+			{
+				mainCamera.zoom(-camZoomAddon);
+			}
+		}
+			break;
+		default:
+			break;
+		}
 	}
 
 
