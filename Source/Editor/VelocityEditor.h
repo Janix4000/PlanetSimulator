@@ -23,7 +23,7 @@ public:
 			const auto newVel = mousePos - planet.getPosition();
 			planet.setVelocity(newVel);
 
-			std::cout << "setingVelocity\n";
+			//std::cout << "setingVelocity\n";
 		}
 	}
 };

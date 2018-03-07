@@ -6,7 +6,7 @@
 
 #include "Camera\Camera.h"
 
-#include "Objects\PlanetManager.h"
+#include "Editor\PlanetManager.h"
 
 #define WIN_WIDTH 1280
 #define WIN_HEIGHT 720

@@ -9,7 +9,7 @@
 
 #include "../Editor/Orbit.h"
 
-class PlanetManager
+class PlanetHolder
 {
 private:
 	enum class State
@@ -20,7 +20,7 @@ private:
 	};
 
 public:
-	PlanetManager(Camera& mainCamera);
+	PlanetHolder();
 
 	void update(float dt);
 
@@ -32,18 +32,22 @@ public:
 
 	void handleInput(const sf::RenderWindow& window);
 
+	Planet* addPlanet();
+
+	bool isSelected(const Planet& planet) const;
+	bool isAnySelected() const;
+
+	Planet* getSelectedPlanetPtr();
+
+	void unSelect();
+
 private:
 	std::vector<std::unique_ptr<Planet>> planets;
 
-	Camera* mainCamera;
-	PlanetEditor editor;
-
-	State state{ State::Pause };
-
 	Planet* selectedPlanet{ nullptr };
 
-	sf::RectangleShape run, pause, edit;
-
+	
+	/*
 	void handleRunningEvent(sf::Event e, const sf::RenderWindow& window);
 
 	void handleEditingEvent(sf::Event e, const sf::RenderWindow& window);
@@ -51,11 +55,10 @@ private:
 	void handlePauseEvent(sf::Event e, const sf::RenderWindow& window);
 
 	void renderIcons(sf::RenderTarget& renderer) const;
-	
+	*/
 
-	Planet* addPlanet();
 
-	void updateEditor(float dt);
+	//void updateEditor(float dt);
 
 	void updateAllPlanets(float dt);
 
@@ -65,22 +68,18 @@ private:
 
 	void refresh();
 
+	/*
 	void startEditing(Planet& planet);
 
 	void startEditingSelectedPlanet();
-
+	*/
 	void selectPlanet(Planet& planet);
 
-	bool isSelected(const Planet& planet) const;
-
-	Planet* getSelectedPlanetPtr();
-
-	void unSelect();
 
 	bool handlePlanetSelecting(sf::Event e, const sf::RenderWindow& window);
 
 	Planet* getOverlappingCursorPlanetPtr(const sf::RenderWindow& window);
-
+	/*
 	void handleAddingEvent(sf::Event e, const sf::RenderWindow& window);
-
+	*/
 };

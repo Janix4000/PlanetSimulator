@@ -21,7 +21,7 @@ public:
 			const auto newPos = getRealMousePos(window);
 			planet.setPosition(newPos);
 
-			std::cout << "X: " << newPos.x << " Y: " << newPos.y << "\n";
+			//std::cout << "X: " << newPos.x << " Y: " << newPos.y << "\n";
 		}
 	}
 };

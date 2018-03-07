@@ -94,7 +94,7 @@ private:
 		const auto distVec = sun->getPosition() - orbiter->getPosition();
 		theta = distVec.getAngleBetweenInDegrees({ 0.f, 1.f });
 
-		std::cout << "Degree: " << theta << "\n";
+		//std::cout << "Degree: " << theta << "\n";
 	}
 
 	void transformEllipse()

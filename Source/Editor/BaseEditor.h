@@ -31,12 +31,12 @@ public:
 			if (sf::Keyboard::isKeyPressed(activeKey))
 			{
 				active = true;
-				std::cout << "is active\n";
+				//std::cout << "is active\n";
 			}
 			break;
 		case sf::Event::MouseButtonPressed:
 			active = false;
-			std::cout << "is inactive\n";
+			//std::cout << "is inactive\n";
 			break;
 		default:
 			break;
