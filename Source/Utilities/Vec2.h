@@ -84,8 +84,8 @@ public:
 	{
 		double sinT = sin(theta);
 		double cosT = cos(theta);
-		x = T(double(x) * (-sinT + cosT));
-		y = T(double(y) * (sinT + cosT));
+		x = T((cosT * double(x)) - (sinT * double(y)));
+		y = T((sinT * double(x)) + (cosT * double(y)));
 		return *this;
 	}
 	_Vec2&	setLen(T size)

@@ -42,6 +42,11 @@ public:
 		default:
 			break;
 		}
+
+		if (isActive())
+		{
+			holdAdditionalEvents(e, window);
+		}
 	}
 
 	bool isActive() const { return active; }
@@ -67,9 +72,15 @@ protected:
 		return *(holder->addPlanet());
 	}
 
+	void removePlanet(Planet& planet)
+	{
+		planet.kill();
+		holder->refresh();
+	}
 
 	virtual void init() {}
 	virtual void end() {}
+	virtual void holdAdditionalEvents(sf::Event e, const sf::RenderWindow& window) {}
 
 private:
 	bool active;

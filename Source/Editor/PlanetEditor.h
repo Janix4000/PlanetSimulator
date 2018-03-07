@@ -6,6 +6,7 @@
 #include "PositionEditor.h"
 #include "RadiusEditor.h"
 #include "OrbitEditor.h"
+#include "CarouselEditor.h"
 
 #include <vector>
 #include <memory>
@@ -21,6 +22,7 @@ public:
 		editors.emplace_back(std::make_unique<PositionEditor>(holder));
 		editors.emplace_back(std::make_unique<RadiusEditor>(holder));
 		editors.emplace_back(std::make_unique<OrbitEditor>(holder));
+		editors.emplace_back(std::make_unique<CarouselEditor>(holder));
 	}
 
 	void update(float dt) 

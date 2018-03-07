@@ -45,6 +45,8 @@ public:
 
 	void move(sf::Vector2f shift)
 	{
+		shift *= totalFactor;
+
 		setPosition(getPosition() + shift);
 	}
 

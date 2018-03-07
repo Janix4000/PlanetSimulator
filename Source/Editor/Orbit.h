@@ -112,7 +112,7 @@ private:
 
 	void calcOrbiterVelocity()
 	{		
-		const auto newVelocity = getNewVelocity();		
+		const auto newVelocity = getNewVelocity() + sun->getVelocity();		
 		orbiter->setVelocity(newVelocity);
 	}
 

@@ -125,6 +125,7 @@ void PlanetManager::handleRunningEvent(sf::Event e, const sf::RenderWindow & win
 	if (holder.isAnySelected())
 	{
 		mainCamera->setTarget(*holder.getSelectedPlanetPtr());
+		holder.unSelect();
 	}
 
 	if (e.type == sf::Event::KeyPressed)

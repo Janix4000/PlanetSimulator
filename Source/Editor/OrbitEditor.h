@@ -30,6 +30,21 @@ public:
 		}
 	}
 
+	void update(float dt) override
+	{
+		if (isActive())
+		{
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add))
+			{
+				orbit.addToEFactor(dt);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract))
+			{
+				orbit.addToEFactor(-dt);
+			}			
+		}
+	}
+
 private:
 
 	void init() override
@@ -39,7 +54,7 @@ private:
 		auto& newOrbiter = addPlanet();
 
 		const float sunRadius = getPlanet().getRadius();
-		float newRadius = std::max(10.f, sunRadius / 4.f);
+		float newRadius = sunRadius / 4.f;
 
 		newOrbiter.setRadius(newRadius);
 		orbit.setOrbiter(newOrbiter);
