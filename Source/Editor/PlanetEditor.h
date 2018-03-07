@@ -1,11 +1,12 @@
 #pragma once
-#include "../Objects/Planet.h"
 
 #include "BaseEditor.h"
 
 #include "VelocityEditor.h"
 #include "PositionEditor.h"
 #include "RadiusEditor.h"
+#include "OrbitEditor.h"
+#include "DeleteEditor.h"
 
 #include <vector>
 #include <memory>
@@ -15,11 +16,13 @@ class PlanetEditor
 {
 public:
 
-	PlanetEditor()
+	PlanetEditor(PlanetHolder& holder)
 	{
-		editors.emplace_back(std::make_unique<VelocityEditor>());
-		editors.emplace_back(std::make_unique<PositionEditor>());
-		editors.emplace_back(std::make_unique<RadiusEditor>());
+		editors.emplace_back(std::make_unique<VelocityEditor>(holder));
+		editors.emplace_back(std::make_unique<PositionEditor>(holder));
+		editors.emplace_back(std::make_unique<RadiusEditor>(holder));
+		editors.emplace_back(std::make_unique<OrbitEditor>(holder));
+		//editors.emplace_back(std::make_unique<DeleteEditor>(holder));
 	}
 
 	void update(float dt) 
@@ -116,6 +119,12 @@ public:
 	bool isEditing() const
 	{
 		return editing;
+	}
+
+	Planet* getEditedPlanetPtr() const
+	{
+		if (isEditing()) return editingPlanet;
+		else return nullptr;
 	}
 
 private:

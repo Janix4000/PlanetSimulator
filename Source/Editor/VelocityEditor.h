@@ -7,9 +7,9 @@ class VelocityEditor
 	public BaseEditor
 {
 public:
-	VelocityEditor()
+	VelocityEditor(PlanetHolder& holder)
 		:
-		BaseEditor(Key::V)
+		BaseEditor(Key::V, holder)
 	{}
 
 	void handleInput(const sf::RenderWindow& window) override

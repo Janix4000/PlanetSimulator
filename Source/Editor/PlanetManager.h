@@ -1,5 +1,6 @@
 #pragma once
-#include"../Objects/PlanetHolder.h"
+
+#include "../Editor/PlanetEditor.h"
 
 class PlanetManager
 {
@@ -27,6 +28,7 @@ private:
 	Camera * mainCamera;
 
 	PlanetHolder holder;
+
 	PlanetEditor editor;
 
 	State state{ State::Pause };
@@ -53,4 +55,8 @@ private:
 	void startEditingSelectedPlanet();
 
 	void handleAddingEvent(sf::Event e, const sf::RenderWindow& window);
+
+	void handleDeleteEvent(sf::Event e, const sf::RenderWindow& window);
+
+	void deleteEdited();
 };

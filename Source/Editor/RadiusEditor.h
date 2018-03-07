@@ -7,9 +7,9 @@ class RadiusEditor
 	public BaseEditor
 {
 public:
-	RadiusEditor()
+	RadiusEditor(PlanetHolder& holder)
 		:
-		BaseEditor(Key::R)
+		BaseEditor(Key::R, holder)
 	{}
 
 	void handleInput(const sf::RenderWindow& window) override

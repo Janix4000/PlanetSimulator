@@ -7,9 +7,9 @@ class PositionEditor
 	public BaseEditor
 {
 public:
-	PositionEditor()
+	PositionEditor(PlanetHolder& holder)
 		:
-		BaseEditor(Key::P)
+		BaseEditor(Key::P, holder)
 	{}
 
 	void handleInput(const sf::RenderWindow& window) override

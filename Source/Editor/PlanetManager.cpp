@@ -4,7 +4,8 @@
 
 PlanetManager::PlanetManager(Camera& cam)
 	:
-	mainCamera(&cam)
+	mainCamera(&cam),
+	editor(holder)
 {
 	run.setFillColor(sf::Color::Green);
 	pause.setFillColor(sf::Color::Yellow);
@@ -138,6 +139,7 @@ void PlanetManager::handleRunningEvent(sf::Event e, const sf::RenderWindow & win
 void PlanetManager::handleEditingEvent(sf::Event e, const sf::RenderWindow & window)
 {
 	editor.handleEvent(e, window);
+	handleDeleteEvent(e, window);
 	if (!editor.isEditing())
 	{
 		state = State::Pause;
@@ -216,4 +218,29 @@ void PlanetManager::handleAddingEvent(sf::Event e, const sf::RenderWindow & wind
 		}
 		break;
 	}
+}
+
+void PlanetManager::handleDeleteEvent(sf::Event e, const sf::RenderWindow & window)
+{
+	switch (e.type)
+	{
+	case sf::Event::KeyPressed:
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+		{
+			if (editor.isEditing())
+			{
+				deleteEdited();
+				state = State::Pause;
+			}
+		}
+		break;
+	}
+}
+
+void PlanetManager::deleteEdited()
+{
+	auto& planet = *editor.getEditedPlanetPtr();
+	editor.end();
+	planet.kill();
+	holder.refresh();
 }

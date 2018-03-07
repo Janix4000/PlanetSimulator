@@ -2,7 +2,7 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "../Objects/Planet.h"
+#include "../Objects/PlanetHolder.h"
 
 #include <cassert>
 
@@ -12,9 +12,10 @@ protected:
 using Key = sf::Keyboard::Key;
 public:
 
-	BaseEditor(Key key)
+	BaseEditor(Key key, PlanetHolder& holder)
 		:
-		activeKey(key)
+		activeKey(key),
+		holder(&holder)
 	{}
 
 	virtual void update(float dt) {}
@@ -31,12 +32,12 @@ public:
 			if (sf::Keyboard::isKeyPressed(activeKey))
 			{
 				active = true;
-				//std::cout << "is active\n";
+				init();
 			}
 			break;
 		case sf::Event::MouseButtonPressed:
 			active = false;
-			//std::cout << "is inactive\n";
+			end();
 			break;
 		default:
 			break;
@@ -61,9 +62,20 @@ protected:
 		return *editingPlanet;
 	}
 
+	Planet& addPlanet()
+	{
+		return *(holder->addPlanet());
+	}
+
+
+	virtual void init() {}
+	virtual void end() {}
+
 private:
 	bool active;
 	Planet* editingPlanet{nullptr};
+
+	PlanetHolder* holder;
 
 	Key activeKey;
 };
