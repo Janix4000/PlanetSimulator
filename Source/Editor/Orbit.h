@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-#include "../Objects/Planet.h"
+#include "../Objects/Planet/Planet.h"
 
 class Orbit
 {

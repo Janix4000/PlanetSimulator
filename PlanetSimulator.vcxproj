@@ -122,28 +122,24 @@
     <ClInclude Include="Source\Editor\Orbit.h" />
     <ClInclude Include="Source\Editor\OrbitEditor.h" />
     <ClInclude Include="Source\Editor\PlanetEditor.h" />
-    <ClInclude Include="Source\Editor\PlanetManager.h" />
     <ClInclude Include="Source\Editor\PositionEditor.h" />
     <ClInclude Include="Source\Editor\RadiusEditor.h" />
     <ClInclude Include="Source\Editor\VelocityEditor.h" />
     <ClInclude Include="Source\Game.h" />
-    <ClInclude Include="Source\Objects\Component.h" />
-    <ClInclude Include="Source\Objects\Entity.h" />
     <ClInclude Include="Source\Objects\FreePhysics.h" />
-    <ClInclude Include="Source\Objects\Planet.h" />
-    <ClInclude Include="Source\Objects\PlanetHolder.h" />
+    <ClInclude Include="Source\Objects\Planet\Planet.h" />
+    <ClInclude Include="Source\Objects\Planet\PlanetHolder.h" />
+    <ClInclude Include="Source\Objects\Planet\PlanetManager.h" />
     <ClInclude Include="Source\Utilities\ChilliMath.h" />
     <ClInclude Include="Source\Utilities\Random.h" />
     <ClInclude Include="Source\Utilities\Vec2.h" />
-    <ClInclude Include="Source\Utilities\Vec3.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Editor\PlaneteManager.cpp" />
-    <ClCompile Include="Source\Editor\PlanetManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Objects\Planet.cpp" />
-    <ClCompile Include="Source\Objects\PlanetHolder.cpp" />
+    <ClCompile Include="Source\Objects\Planet\Planet.cpp" />
+    <ClCompile Include="Source\Objects\Planet\PlanetHolder.cpp" />
+    <ClCompile Include="Source\Objects\Planet\PlanetManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

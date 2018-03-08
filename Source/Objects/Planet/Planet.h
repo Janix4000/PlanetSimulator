@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Entity.h"
-#include "FreePhysics.h"
+#include "../FreePhysics.h"
 
-#include "../Utilities/Vec2.h"
-#include "../Utilities/Random.h"
+#include "../../Utilities/Vec2.h"
+#include "../../Utilities/Random.h"
 
 #define G 100.f
 
@@ -84,6 +83,8 @@ private:
 
 	const size_t ID;
 	static size_t planetsNum;
+
+
 
 private:
 

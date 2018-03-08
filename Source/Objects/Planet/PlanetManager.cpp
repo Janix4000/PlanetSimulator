@@ -123,6 +123,7 @@ void PlanetManager::handleRunningEvent(sf::Event e, const sf::RenderWindow & win
 	if (holder.isClicked() || holder.isReadyToCamFollow())
 	{
 		mainCamera->setTarget(holder.getSelectedPlanet());
+		holder.removeReadyToCamMark();
 	}
 
 	if (e.type == sf::Event::KeyPressed)
@@ -262,4 +263,10 @@ void PlanetManager::deleteEdited()
 		std::cout << "Camera is free now\n";
 		mainCamera->free();
 	}
+}
+
+void PlanetManager::changeStateToPause()
+{
+	state = State::Pause;
+	mainCamera->free();
 }

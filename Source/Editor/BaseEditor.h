@@ -2,7 +2,7 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "../Objects/PlanetHolder.h"
+#include "../Objects/Planet/PlanetHolder.h"
 
 #include <cassert>
 

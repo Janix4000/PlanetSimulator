@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Editor/PlanetEditor.h"
+#include "../../Editor/PlanetEditor.h"
 
 class PlanetManager
 {
@@ -58,9 +58,5 @@ private:
 
 	void deleteEdited();
 
-	void changeStateToPause()
-	{
-		state = State::Pause;
-		mainCamera->free();
-	}
+	void changeStateToPause();
 };

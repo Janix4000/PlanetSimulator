@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Objects/FreePhysics.h"
-#include "../Objects/Planet.h"
+#include "../Objects/Planet/Planet.h"
 
 class FollowingBehavior
 {

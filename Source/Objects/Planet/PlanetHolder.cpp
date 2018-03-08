@@ -13,6 +13,72 @@ void PlanetHolder::update(float dt)
 }
 
 
+void PlanetHolder::selectPreviousPlanet()
+{
+	readyToCamFollow = false;
+
+	if (planets.size() > 0u)
+	{
+		if (selectedPlanet == nullptr)
+		{
+			selectPlanet(*(planets.front()));
+		}
+		else
+		{
+			Planet* prevoiusPlanet = { nullptr };
+
+			const int oldID = selectedPlanet->getID();
+
+			int newID = -1;
+
+			for (const auto& planet : planets)
+			{
+				int ID = planet->getID();
+
+				if (ID < oldID)
+				{
+					if (ID > newID)
+					{
+						newID = ID;
+						prevoiusPlanet = planet.get();
+					}
+				}
+			}
+
+			if (prevoiusPlanet == nullptr)
+			{
+				newID = selectedPlanet->getID();
+				for (const auto& planet : planets)
+				{
+					int ID = planet->getID();
+					if (ID >= newID)
+					{
+						newID = ID;
+						prevoiusPlanet = planet.get();
+					}
+				}
+			}
+
+			readyToCamFollow = true;
+			selectPlanet(*prevoiusPlanet);
+		}
+	}
+
+	readyToCamFollow = true;
+}
+
+bool PlanetHolder::isReadyToCamFollow() const
+{
+	return readyToCamFollow;
+}
+
+void PlanetHolder::removeReadyToCamMark()
+{
+	readyToCamFollow = false;
+}
+
+bool PlanetHolder::isClicked() const { return clicked; }
+
 void PlanetHolder::updateAllPlanets(float dt)
 {
 	attractAllPlanets();
@@ -57,6 +123,8 @@ void PlanetHolder::handlePlanetCrushing()
 
 void PlanetHolder::refresh()
 {
+	//readyToCamFollow = false;
+
 	auto newEnd = std::remove_if(planets.begin(), planets.end(), [](const auto& planet) {
 		return !planet->isAlive();
 	});
@@ -80,6 +148,60 @@ void PlanetHolder::refresh()
 	}
 
 	planets.erase(newEnd, planets.end());
+}
+
+void PlanetHolder::selectNextPlanet()
+{
+	readyToCamFollow = false;
+
+	if (planets.size() > 0u)
+	{
+		if (selectedPlanet == nullptr)
+		{
+			selectPlanet(*(planets.front()));
+		}
+		else
+		{
+			Planet* nextPlanet = { nullptr };
+
+			const int oldID = selectedPlanet->getID();
+
+			int newID = 10000;
+
+			for (const auto& planet : planets)
+			{
+				int ID = planet->getID();
+
+				if (ID > oldID)
+				{
+					if (ID < newID)
+					{
+						newID = ID;
+						nextPlanet = planet.get();
+					}
+				}
+			}
+
+			if (nextPlanet == nullptr)
+			{
+				newID = selectedPlanet->getID();
+				for (const auto& planet : planets)
+				{
+					int ID = planet->getID();
+					if (ID <= newID)
+					{
+						newID = ID;
+						nextPlanet = planet.get();
+					}
+				}
+			}
+
+			readyToCamFollow = true;
+			selectPlanet(*nextPlanet);
+		}
+	}
+
+	readyToCamFollow = true;
 }
 
 
@@ -138,6 +260,19 @@ Planet& PlanetHolder::getSelectedPlanet()
 { 
 	assert(selectedPlanet != nullptr);
 	return *selectedPlanet;
+}
+
+bool PlanetHolder::isSelectedRemoved() const
+{
+	if (selectedWasRemoved)
+	{
+		selectedWasRemoved = false;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool PlanetHolder::handlePlanetSelecting(sf::Event e, const sf::RenderWindow & window)

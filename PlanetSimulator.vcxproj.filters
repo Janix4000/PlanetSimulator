@@ -18,16 +18,7 @@
     <ClInclude Include="Source\Camera\FollowingBehavior.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Objects\Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Objects\Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Objects\FreePhysics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Objects\Planet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utilities\ChilliMath.h">
@@ -37,9 +28,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utilities\Vec2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Utilities\Vec3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game.h">
@@ -63,12 +51,6 @@
     <ClInclude Include="Source\Editor\Orbit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Objects\PlanetHolder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Editor\PlanetManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Editor\OrbitEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,24 +60,30 @@
     <ClInclude Include="Source\Camera\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Objects\Planet\Planet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Planet\PlanetHolder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Planet\PlanetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Objects\Planet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Objects\PlanetHolder.cpp">
+    <ClCompile Include="Source\Objects\Planet\Planet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Editor\PlaneteManager.cpp">
+    <ClCompile Include="Source\Objects\Planet\PlanetHolder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Editor\PlanetManager.cpp">
+    <ClCompile Include="Source\Objects\Planet\PlanetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
