@@ -69,7 +69,11 @@ protected:
 
 	Planet& addPlanet()
 	{
-		return *(holder->addPlanet());
+		auto& newPlanet = *(holder->addPlanet());
+
+		holder->isAnySelected();
+
+		return (newPlanet);
 	}
 
 	void removePlanet(Planet& planet)

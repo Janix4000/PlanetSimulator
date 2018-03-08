@@ -57,9 +57,38 @@ void PlanetHolder::handlePlanetCrushing()
 
 void PlanetHolder::refresh()
 {
-	planets.erase(std::remove_if(planets.begin(), planets.end(), [](const auto& planet) {
+	auto newEnd = std::remove_if(planets.begin(), planets.end(), [](const auto& planet) {
 		return !planet->isAlive();
-	}), planets.end());
+	});
+
+	const bool selectedLives = std::any_of(planets.begin(), newEnd, [&](const auto& planet) {
+		return planet.get() == selectedPlanet;
+	});
+
+	if (!selectedLives)
+	{
+		if (newEnd != planets.begin())
+		{
+			selectedPlanet = planets.front().get();
+		}
+		else
+		{
+			selectedPlanet = nullptr;
+		}
+
+		selectedWasRemoved = true;
+	}
+
+	if (selectedPlanet == nullptr)
+	{
+		std::cout << "Selected is null\n";
+	}
+	else
+	{
+		std::cout << "Selected isn't null\n";
+	}
+
+	planets.erase(newEnd, planets.end());
 }
 
 
@@ -92,34 +121,48 @@ Planet * PlanetHolder::addPlanet()
 	return planetPtr;
 }
 
-
-void PlanetHolder::selectPlanet(Planet & planet)
+Planet * PlanetHolder::addAndSelectPlanet()
 {
-	selectedPlanet = &planet;
+	auto* newPlanet = addPlanet();
+	selectPlanet(*newPlanet);
+
+	return newPlanet;
 }
+
+
+
 
 bool PlanetHolder::isSelected(const Planet & planet) const { return selectedPlanet == &planet; }
 
 bool PlanetHolder::isAnySelected() const
 {
-	return selectedPlanet != nullptr;
+	if (selectedPlanet != nullptr && !wasChecked)
+	{
+		wasChecked = true;
+		return true;
+	}
+
+	return false;
 }
 
-Planet * PlanetHolder::getSelectedPlanetPtr() { return selectedPlanet; }
+Planet& PlanetHolder::getSelectedPlanet()
 
-void PlanetHolder::unSelect()
-{
-	selectedPlanet = nullptr;
+{ 
+	assert(selectedPlanet != nullptr);
+	return *selectedPlanet;
 }
 
 bool PlanetHolder::handlePlanetSelecting(sf::Event e, const sf::RenderWindow & window)
 {
+	clicked = false;
 	if (e.type == sf::Event::MouseButtonPressed)
 	{
-		auto clicked = getOverlappingCursorPlanetPtr(window);
-		if (clicked != nullptr)
+		auto clickedOne = getOverlappingCursorPlanetPtr(window);
+
+		if (clickedOne != nullptr)
 		{
-			selectPlanet(*clicked);
+			clicked = true;
+			selectPlanet(*clickedOne);
 			return true;
 		}
 	}
@@ -139,5 +182,9 @@ Planet * PlanetHolder::getOverlappingCursorPlanetPtr(const sf::RenderWindow & wi
 	return overlapper->get();
 }
 
-
+void PlanetHolder::selectPlanet(Planet & planet)
+{
+	wasChecked = false;
+	selectedPlanet = &planet;
+}
 

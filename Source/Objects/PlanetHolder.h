@@ -32,19 +32,136 @@ public:
 
 	Planet* addPlanet();
 
+	Planet* addAndSelectPlanet();
+
 	bool isSelected(const Planet& planet) const;
 	bool isAnySelected() const;
 
-	Planet* getSelectedPlanetPtr();
+	Planet& getSelectedPlanet();
 
-	void unSelect();
+	bool isSelectedRemoved()const
+	{
+		if (selectedWasRemoved)
+		{
+			selectedWasRemoved = false;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	void refresh();
+
+	void selectNextPlanet()
+	{
+		if (selectedPlanet == nullptr)
+		{
+
+		}
+		else
+		{
+			Planet* nextPlanet = { nullptr };
+
+			const int oldID = selectedPlanet->getID();
+
+			int newID = 1000;
+
+			for (const auto& planet : planets)
+			{
+				int ID = planet->getID();
+
+				if (ID > oldID)
+				{
+					if (ID < newID)
+					{
+						newID = ID;
+						nextPlanet = planet.get();
+					}
+				}
+			}
+
+			if (nextPlanet == nullptr)
+			{
+				newID = selectedPlanet->getID();
+				for (const auto& planet : planets)
+				{
+					int ID = planet->getID();
+					if (ID <= newID)
+					{
+						newID = ID;
+						nextPlanet = planet.get();
+					}
+				}
+			}
+
+			clicked = true;
+			selectPlanet(*nextPlanet);
+		}
+	}
+
+	void selectPreviousPlanet()
+	{
+		if (selectedPlanet == nullptr)
+		{
+
+		}
+		else
+		{
+			Planet* nextPlanet = { nullptr };
+
+			const int oldID = selectedPlanet->getID();
+
+			int newID = -1;
+
+			for (const auto& planet : planets)
+			{
+				int ID = planet->getID();
+
+				if (ID < oldID)
+				{
+					if (ID > newID)
+					{
+						newID = ID;
+						nextPlanet = planet.get();
+					}
+				}
+			}
+
+			if (nextPlanet == nullptr)
+			{
+				newID = selectedPlanet->getID();
+				for (const auto& planet : planets)
+				{
+					int ID = planet->getID();
+					if (ID >= newID)
+					{
+						newID = ID;
+						nextPlanet = planet.get();
+					}
+				}
+			}
+
+			clicked = true;
+			selectPlanet(*nextPlanet);
+		}
+	}
+
+	bool isClicked() const
+	{
+		return clicked;
+	}
 
 private:
 	std::vector<std::unique_ptr<Planet>> planets;
 
 	Planet* selectedPlanet{ nullptr };
+	mutable bool wasChecked{ false };
+
+	mutable bool selectedWasRemoved{ false };
+
+	bool clicked{ false };
 
 	void updateAllPlanets(float dt);
 
@@ -54,13 +171,15 @@ private:
 
 	void selectPlanet(Planet& planet);
 
+
+	/*
 	Planet& getNextPlanet(const Planet& previousPlanet)
 	{
 		const int prevID = previousPlanet.getID();
 
 
 	}
-
+	*/
 	/*
 	Planet& getNextPlanetByID(const int prevID)
 	{
@@ -144,4 +263,5 @@ private:
 	bool handlePlanetSelecting(sf::Event e, const sf::RenderWindow& window);
 
 	Planet* getOverlappingCursorPlanetPtr(const sf::RenderWindow& window);
+
 };

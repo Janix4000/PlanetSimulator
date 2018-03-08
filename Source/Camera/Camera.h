@@ -19,6 +19,9 @@ public:
 	void update(float dt)
 	{
 		updatePhysic(dt);
+
+		//std::cout << "Cam pos: x:" << getPosition().x << " y:" << getPosition().y << "\n";
+
 	}
 
 	void setTarget(const Planet& target)

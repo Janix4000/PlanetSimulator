@@ -45,18 +45,22 @@ private:
 
 	void handlePauseEvent(sf::Event e, const sf::RenderWindow& window);
 
-	void unselect();
-
 	void renderIcons(sf::RenderTarget& renderer) const;
 
 
 	void startEditing(Planet& planet);
 
-	void startEditingSelectedPlanet();
+	void startEditingClickedPlanet();
 
 	void handleAddingEvent(sf::Event e, const sf::RenderWindow& window);
 
 	void handleDeleteEvent(sf::Event e, const sf::RenderWindow& window);
 
 	void deleteEdited();
+
+	void changeStateToPause()
+	{
+		state = State::Pause;
+		mainCamera->free();
+	}
 };
