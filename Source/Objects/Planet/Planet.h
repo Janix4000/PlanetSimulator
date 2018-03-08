@@ -73,6 +73,17 @@ public:
 		return distSqr <= pow(getRadius(), 2);
 	}
 
+	void turnOnOutline()
+	{
+		hasOutline = true;
+		calcOutline();
+	}
+	void disableOutline()
+	{
+		hasOutline = false;
+		calcOutline();
+	}
+
 private:
 	FreePhysics physic;
 
@@ -84,9 +95,26 @@ private:
 	const size_t ID;
 	static size_t planetsNum;
 
-
+	bool hasOutline{ false };
 
 private:
+
+	void calcOutline()
+	{
+		if (hasOutline)
+		{
+			const float r = getRadius();
+
+			const float newOutlineThicknes = std::max(r * 0.05f, 1.f);
+
+			circle.setOutlineThickness(newOutlineThicknes);
+			circle.setOutlineColor({ 255u, 255u, 255u });
+		}
+		else
+		{
+			circle.setOutlineThickness(0.f);
+		}
+	}
 
 	float getNewRadiusByMass(float newMass) const;
 

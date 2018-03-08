@@ -29,6 +29,7 @@ public:
 	{
 		if (isEditing())
 		{
+			editingPlanet->turnOnOutline();
 			for (auto& editor : editors)
 			{
 				editor->update(dt);
@@ -114,6 +115,7 @@ public:
 			editor->freePlanet();
 		}
 		editing = false;
+		editingPlanet->disableOutline();
 	}
 
 	bool isEditing() const

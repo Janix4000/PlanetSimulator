@@ -92,6 +92,8 @@ void Planet::setRadius(float newRadius)
 	circle.setRadius(newRadius);
 	circle.setOrigin(newRadius, newRadius);
 	mass = getNewMassByRadius(newRadius);
+
+	calcOutline();
 }
 
 float Planet::getNewMassByRadius(float newRadius) const
