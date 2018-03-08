@@ -1,0 +1,29 @@
+[WSAD] - Camera movement
+[MOUSE WHEEL] - Camera zoom
+
+(PAUSE - YELLOW):
+
+  [SPACE] - Start simulation
+  [ENTER] - Add Planet   
+  [CLICK ON PLANET] - Edit planet
+   
+(EDITOR - RED):
+  
+  [C] - Make "carousel"
+    [+] - Add orbiter
+    [-] - Remove one orbiter   
+  [V] - Set velocity  
+  [P] - Set position  
+  [O] - Make orbiter
+    [+] - Make orbit longer
+    [-] - Make orbit shorter    
+  [R] - Set radius (and mass)  
+  [BACKSPACE] - Remove planet
+  [CLICK OUTSIDE PLANET | ENTER] - End editing
+    
+  (EDITOR - RED):
+  
+  [SPACE] - Pause simulation
+  [CLICK ON PLANET] - Follow planet
+  [E] - Follow next planet
+  [Q] - Follow previous planet  
