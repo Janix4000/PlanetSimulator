@@ -21,7 +21,7 @@
 #pragma once
 
 #include "ChilliMath.h"
-#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics.hpp>
 
 template <typename T>
 class _Vec2
@@ -84,8 +84,8 @@ public:
 	{
 		double sinT = sin(theta);
 		double cosT = cos(theta);
-		x = T(double(x) * (-sinT + cosT));
-		y = T(double(y) * (sinT + cosT));
+		x = T((cosT * double(x)) - (sinT * double(y)));
+		y = T((sinT * double(x)) + (cosT * double(y)));
 		return *this;
 	}
 	_Vec2&	setLen(T size)
@@ -103,6 +103,27 @@ public:
 		}
 		return *this;
 	}
+	T getDotProduct(_Vec2<T> other) const
+	{
+		return x * other.x + y * other.y;
+	}
+	T getDeterminant(_Vec2<T> right) const
+	{
+		return x * right.y - y * right.x;
+	}
+
+	T getAngleBetween(_Vec2<T> other) const
+	{
+		T dot = getDotProduct(other);
+		T det = getDeterminant(other);
+		
+		return atan2(dot, det);
+	}
+	T getAngleBetweenInDegrees(_Vec2<T> other) const
+	{
+		return getInDeegrees(getAngleBetween(other));
+	}
+
 
 
 	_Vec2	operator-() const
@@ -175,3 +196,10 @@ public:
 typedef _Vec2<float> Vec2;
 typedef _Vec2<double> Ved2;
 typedef _Vec2<int> Vei2;
+
+inline Vec2 getRealMousePos(const sf::RenderWindow& window)
+{
+	auto mPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+	return { mPos.x, mPos.y };
+}

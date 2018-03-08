@@ -1,173 +1,150 @@
 #pragma once
 
 #include "../Objects/FreePhysics.h"
+#include "../Objects/Planet.h"
+
 class FollowingBehavior
 {
 public:
 
-	FollowingBehavior()
+	enum class State
 	{
-		maxSpeed = 350.f;
-		maxAcc = maxSpeed;
+		Free,
+		Going,
+		OnlyGoing,
+		Following
+	} state = State::Free;
 
-		retardationDist = 400.f;
-		catchDist = 30.f;
-
+	FollowingBehavior(FreePhysics& physic)
+		:
+		ownersPhysic(&physic)
+	{
 		holdTime = timeToArrive;
 	}
 
-
-	void applyTo(float dt, FreePhysics& objPhysic)
+	void update(float dt)
 	{
-		if (hasTarget)
+		switch (state)
 		{
-			if(holdTime > 0.f)
-				goTo(dt, objPhysic);
-			else
-				applyForceTo(objPhysic);
-		}
-		else
-		{
-			stopObj(objPhysic);
+		case State::Following:
+			followTarget();
+			break;
+		case State::Going:
+		case State::OnlyGoing:
+			goToTarget(dt);
+			break;
 		}
 	}
 
-	void setTarget(const sf::Vector2f& newTarget)
+	void setTarget(const Planet& newTarget)
 	{
-		target = { newTarget.x, newTarget.y };
-		if (!hasTarget)
+		if (&newTarget != target)
 		{
-			holdTime = timeToArrive;
-			hasTarget = true;
+			target = &newTarget;
+
+			changeStateToGoing();
 		}
 	}
 
-	void stop(FreePhysics& objPhysic)
+	void changeStateToGoing()
 	{
-		stopObj(objPhysic);
-		hasTarget = false;
+		resetHoldTime();
+		state = State::Going;
+	}
+
+	void goTo(const Planet& newTarget)
+	{
+		if (&newTarget != target)
+		{
+			target = &newTarget;
+
+			changeStateToGoingOnly();
+		}
+	}
+
+	void changeStateToGoingOnly()
+	{
+		resetHoldTime();
+		state = State::OnlyGoing;
+	}
+
+	void changeStateToFollowing()
+	{
+		state = State::Following;
+	}
+
+	void changeStateToFree()
+	{
+		stopObj();
+		target = { nullptr };
+		state = State::Free;
 	}
 
 
 private:
 
-	bool hasTarget = false;
-	Vec2 target;
+	const Planet* target{nullptr};
+	FreePhysics* ownersPhysic{nullptr};
 
-	float maxSpeed = 200.f;
-	float maxAcc = 2.f * maxSpeed;
-
-	float retardationDist = 500.f;
-	float catchDist;
-
-	void stopObj(FreePhysics& objPhysic)
+	void goToTarget(float dt)
 	{
-		objPhysic.vel *= 0.f;
-		objPhysic.acc *= 0.f;
-	}
+		const float dist = getDistToTarget();
 
-	void applyForceTo(FreePhysics& objPhysic)
-	{
-		const auto pos = objPhysic.pos;
+		float d = (dist / holdTime);
+		holdTime -= dt;
 
-		auto distVec = target - pos;
+		auto newVel = target->getPosition() - ownersPhysic->pos;
 
-		auto desire = makeDesire(distVec);
+		newVel.setLen(d);
+		ownersPhysic->vel = newVel;
+		ownersPhysic->acc *= 0.f;
 
-		auto force = makeForce(desire, objPhysic);
-
-		objPhysic.acc += force;
-
-		objPhysic.vel.limit(maxSpeed);
-
-		handleCatching(objPhysic);
-	}
-
-	Vec2 makeDesire(Vec2& distVec)
-	{
-		const float distSqr = distVec.getLenSq();
-
-		float mag = maxSpeed;
-		if (isInRadius(distSqr, retardationDist))
+		if (holdTime <= 0.f)
 		{
-			float dist = sqrt(distSqr);
-			mag = map(dist, 0.f, retardationDist, 0.f, maxSpeed);
-		}
-
-		Vec2 desire = distVec;
-
-		desire.setLen(mag);
-		return desire;
-	}
-
-	bool isInRadius(Vec2 distVec, float radius)
-	{
-		float distSqr = distVec.getLenSq();
-		return isInRadius(distSqr, radius);
-	}
-	bool isInRadius(float distSqr, float radius)
-	{
-		return distSqr < pow(radius, 2);
-	}
-
-	Vec2 makeForce(const Vec2& desire, const FreePhysics& objPhysic)
-	{
-		const auto vel = objPhysic.vel;
-		auto force = desire - vel;
-		force.limit(maxAcc);
-		return force;
-	}
-
-	void handleCatching(FreePhysics& objPhysic)
-	{
-		Vec2 distVec = objPhysic.pos - target;
-
-		const float distSqr = distVec.getLenSq();
-
-		if (!isInRadius(distSqr, catchDist))
-		{
-			auto maxDistVec = distVec;
-			maxDistVec.setLen(catchDist);
-
-			auto newPos = (target + maxDistVec);
-
-			objPhysic.pos = newPos;
-		}
-
-		if (distSqr < 1.f)
-		{
-			objPhysic.vel *= 0.f;
+			if (state == State::Going)
+			{
+				changeStateToFollowing();
+			}
+			else if (state == State::OnlyGoing)
+			{
+				changeStateToFree();
+			}
 		}
 	}
 
-	float getDistSqToTarget(const FreePhysics& objPhysic) const
+	void resetHoldTime()
 	{
-		auto distVec = objPhysic.pos - target;
+		holdTime = timeToArrive;
+	}
+
+	void stopObj()
+	{
+		ownersPhysic->vel *= 0.f;
+		ownersPhysic->acc *= 0.f;
+	}
+
+	void followTarget()
+	{
+		ownersPhysic->pos = target->getPosition();
+		stopObj();
+	}
+
+
+	float getDistSqToTarget() const
+	{
+		auto distVec = ownersPhysic->pos - target->getPosition();
 		return distVec.getLenSq();
 	}
 
-	float getDistToTarget(const FreePhysics& objPhysic) const
+	float getDistToTarget() const
 	{
-		return sqrt(getDistSqToTarget(objPhysic));
+		return sqrt(getDistSqToTarget());
 	}
 
 
 	const float timeToArrive = 0.5f;
 	float holdTime = timeToArrive;
 
-	void goTo(float dt, FreePhysics& objPhysic)
-	{
-		const float dist = getDistToTarget(objPhysic);
-
-		float d = (dist / holdTime);
-		holdTime -= dt;
-
-		auto newVel = target - objPhysic.pos;
-
-		newVel.setLen(d);
-		objPhysic.vel = newVel;
-
-		objPhysic.acc *= 0.f;
-	}
+	
 
 };
