@@ -120,7 +120,7 @@ void PlanetManager::handleRunningEvent(sf::Event e, const sf::RenderWindow & win
 {
 	holder.handleEvent(e, window);
 
-	if (holder.isClicked())
+	if (holder.isClicked() || holder.isReadyToCamFollow())
 	{
 		mainCamera->setTarget(holder.getSelectedPlanet());
 	}

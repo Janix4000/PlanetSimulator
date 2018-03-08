@@ -22,7 +22,7 @@ public:
 
 	void update(float dt);
 
-	
+
 
 	void render(sf::RenderTarget& renderer)const;
 
@@ -56,112 +56,132 @@ public:
 
 	void selectNextPlanet()
 	{
-		if (selectedPlanet == nullptr)
+		readyToCamFollow = false;
+
+		if (planets.size() > 0u)
 		{
-
-		}
-		else
-		{
-			Planet* nextPlanet = { nullptr };
-
-			const int oldID = selectedPlanet->getID();
-
-			int newID = 1000;
-
-			for (const auto& planet : planets)
+			if (selectedPlanet == nullptr)
 			{
-				int ID = planet->getID();
-
-				if (ID > oldID)
-				{
-					if (ID < newID)
-					{
-						newID = ID;
-						nextPlanet = planet.get();
-					}
-				}
+				selectPlanet(*(planets.front()));
 			}
-
-			if (nextPlanet == nullptr)
+			else
 			{
-				newID = selectedPlanet->getID();
-				for (const auto& planet : planets)
-				{
-					int ID = planet->getID();
-					if (ID <= newID)
-					{
-						newID = ID;
-						nextPlanet = planet.get();
-					}
-				}
-			}
+					Planet* nextPlanet = { nullptr };
 
-			clicked = true;
-			selectPlanet(*nextPlanet);
+					const int oldID = selectedPlanet->getID();
+
+					int newID = 10000;
+
+					for (const auto& planet : planets)
+					{
+						int ID = planet->getID();
+
+						if (ID > oldID)
+						{
+							if (ID < newID)
+							{
+								newID = ID;
+								nextPlanet = planet.get();
+							}
+						}
+					}
+
+					if (nextPlanet == nullptr)
+					{
+						newID = selectedPlanet->getID();
+						for (const auto& planet : planets)
+						{
+							int ID = planet->getID();
+							if (ID <= newID)
+							{
+								newID = ID;
+								nextPlanet = planet.get();
+							}
+						}
+					}
+
+					readyToCamFollow = true;
+					selectPlanet(*nextPlanet);
+			}
 		}
+
+		readyToCamFollow = true;
 	}
 
 	void selectPreviousPlanet()
 	{
-		if (selectedPlanet == nullptr)
+		readyToCamFollow = false;
+
+		if (planets.size() > 0u)
 		{
-
-		}
-		else
-		{
-			Planet* nextPlanet = { nullptr };
-
-			const int oldID = selectedPlanet->getID();
-
-			int newID = -1;
-
-			for (const auto& planet : planets)
+			if (selectedPlanet == nullptr)
 			{
-				int ID = planet->getID();
-
-				if (ID < oldID)
-				{
-					if (ID > newID)
-					{
-						newID = ID;
-						nextPlanet = planet.get();
-					}
-				}
+				selectPlanet(*(planets.front()));
 			}
-
-			if (nextPlanet == nullptr)
+			else
 			{
-				newID = selectedPlanet->getID();
+				Planet* prevoiusPlanet = { nullptr };
+
+				const int oldID = selectedPlanet->getID();
+
+				int newID = -1;
+
 				for (const auto& planet : planets)
 				{
 					int ID = planet->getID();
-					if (ID >= newID)
+
+					if (ID < oldID)
 					{
-						newID = ID;
-						nextPlanet = planet.get();
+						if (ID > newID)
+						{
+							newID = ID;
+							prevoiusPlanet = planet.get();
+						}
 					}
 				}
+
+				if (prevoiusPlanet == nullptr)
+				{
+					newID = selectedPlanet->getID();
+					for (const auto& planet : planets)
+					{
+						int ID = planet->getID();
+						if (ID >= newID)
+						{
+							newID = ID;
+							prevoiusPlanet = planet.get();
+						}
+					}
+				}
+
+				readyToCamFollow = true;
+				selectPlanet(*prevoiusPlanet);
 			}
-
-			clicked = true;
-			selectPlanet(*nextPlanet);
 		}
+
+		readyToCamFollow = true;
 	}
 
-	bool isClicked() const
+	bool isReadyToCamFollow() const
 	{
-		return clicked;
+		return readyToCamFollow;
 	}
+
+	bool isClicked()const { return clicked; }
 
 private:
 	std::vector<std::unique_ptr<Planet>> planets;
 
 	Planet* selectedPlanet{ nullptr };
-	mutable bool wasChecked{ false };
+
+
 
 	mutable bool selectedWasRemoved{ false };
 
+	bool readyToCamFollow{ false };
 	bool clicked{ false };
+
+
 
 	void updateAllPlanets(float dt);
 
@@ -170,95 +190,6 @@ private:
 	void handlePlanetCrushing();
 
 	void selectPlanet(Planet& planet);
-
-
-	/*
-	Planet& getNextPlanet(const Planet& previousPlanet)
-	{
-		const int prevID = previousPlanet.getID();
-
-
-	}
-	*/
-	/*
-	Planet& getNextPlanetByID(const int prevID)
-	{
-		assert(!planets.empty());
-
-		int nextID = 10000; //xd
-
-		Planet* nextPlanet = { nullptr };
-
-		for (const auto& planet : planets)
-		{
-			const int ID = planet->getID();
-			if (ID > prevID)
-			{
-				if (ID < nextID && ID!=prevID)
-				{
-					nextID = ID;
-					nextPlanet = planet.get();
-				}
-			}
-		}
-
-		if (nextPlanet == nullptr)
-		{
-			nextPlanet = planets.front().get();
-			int minID = nextPlanet ->getID();
-
-			for (const auto& planet : planets)
-			{
-				const int ID = planet->getID();
-				if (ID < minID)
-				{
-					minID = ID;
-					nextPlanet = planet.get();
-				}
-			}
-		}
-			return *nextPlanet;
-	}
-
-	Planet& getPreviousPlanetByID(const int nextID)
-	{
-		assert(!planets.empty());
-
-		int prevID = -1; //xd
-
-		Planet* prevPlanet = { nullptr };
-
-		for (const auto& planet : planets)
-		{
-			const int ID = planet->getID();
-			if (ID < nextID)
-			{
-				if (ID > prevID && ID != nextID)
-				{
-					prevID = ID;
-					prevPlanet = planet.get();
-				}
-			}
-		}
-
-		if (prevPlanet == nullptr)
-		{
-			prevPlanet = planets.front().get();
-			int minID = prevPlanet->getID();
-
-			for (const auto& planet : planets)
-			{
-				const int ID = planet->getID();
-				if (ID < minID)
-				{
-					minID = ID;
-					prevPlanet = planet.get();
-				}
-			}
-		}
-		return *prevPlanet;
-	}
-	*/
 
 	bool handlePlanetSelecting(sf::Event e, const sf::RenderWindow& window);
 

@@ -126,6 +126,7 @@ private:
 	void followTarget()
 	{
 		ownersPhysic->pos = target->getPosition();
+		stopObj();
 	}
 
 

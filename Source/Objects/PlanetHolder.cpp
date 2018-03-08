@@ -79,15 +79,6 @@ void PlanetHolder::refresh()
 		selectedWasRemoved = true;
 	}
 
-	if (selectedPlanet == nullptr)
-	{
-		std::cout << "Selected is null\n";
-	}
-	else
-	{
-		std::cout << "Selected isn't null\n";
-	}
-
 	planets.erase(newEnd, planets.end());
 }
 
@@ -117,6 +108,8 @@ Planet * PlanetHolder::addPlanet()
 	auto planet = std::make_unique<Planet>();
 	auto planetPtr = planet.get();
 
+	selectPlanet(*planet);
+
 	planets.emplace_back(std::move(planet));
 	return planetPtr;
 }
@@ -124,6 +117,7 @@ Planet * PlanetHolder::addPlanet()
 Planet * PlanetHolder::addAndSelectPlanet()
 {
 	auto* newPlanet = addPlanet();
+
 	selectPlanet(*newPlanet);
 
 	return newPlanet;
@@ -136,13 +130,7 @@ bool PlanetHolder::isSelected(const Planet & planet) const { return selectedPlan
 
 bool PlanetHolder::isAnySelected() const
 {
-	if (selectedPlanet != nullptr && !wasChecked)
-	{
-		wasChecked = true;
-		return true;
-	}
-
-	return false;
+	return selectedPlanet != nullptr;
 }
 
 Planet& PlanetHolder::getSelectedPlanet()
@@ -184,7 +172,6 @@ Planet * PlanetHolder::getOverlappingCursorPlanetPtr(const sf::RenderWindow & wi
 
 void PlanetHolder::selectPlanet(Planet & planet)
 {
-	wasChecked = false;
 	selectedPlanet = &planet;
 }
 
