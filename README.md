@@ -1,6 +1,5 @@
-# PlanetSimulator
-Program tworzony jako portfolio do rekrutacji w projekcie Szczur
+# Planet Simulator
+Project written as a portfolio for recruitment in the Rat project.
 
-Program jest bazowany na moim starszym projekcie, napisanym w processingu (środowisko Javy)
-
+https://github.com/BasementStudios/SzczurEngine
 
